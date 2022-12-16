@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     TextView tvScore;
     ArrayList<Integer> sequence = new ArrayList<>();
     boolean Play = false;
-    boolean demoSeq = true;
+    boolean demoSeq = false;
     int seqPos = 0;
     int clickPos = 0;
     int score = 0;
@@ -46,8 +46,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         btnBlue = findViewById(R.id.btnBlue);
         //link textview for score
         tvScore = findViewById(R.id.tvScore);
-        //Create initial sequence
-        buildSequence(4);
 
         // Get instance of Vibrator from current Context
         v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -73,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
       runSequence();
     }
 
+    //Adds inputted number of stages to sequence
     public void buildSequence(int quantity)
     {
         Random rng = new Random();
@@ -86,34 +85,44 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
     }
 
+    //Demonstrate the sequence
     public void runSequence() {
         onPause();
-        long time = sequence.size() * 1000;
+        demoSeq = false;
+        long time = (sequence.size() * 1000) + 1000;
 
         CountDownTimer cdt = new CountDownTimer(time, 1000) {
             @Override
             public void onTick(long l)
             {
-                switch (sequence.get(seqPos))
+                //Give a 1 second delay before beginning demo
+                if(demoSeq)
                 {
-                    case 1:
-                        colorClick(btnBlue, demoSeq);
-                        Log.i("btn", "Clicking Blue");
-                        break;
-                    case 2:
-                        colorClick(btnRed, demoSeq);
-                        Log.i("btn", "Clicking Red");
-                        break;
-                    case 3:
-                        colorClick(btnGreen, demoSeq);
-                        Log.i("btn", "Clicking Green");
-                        break;
-                    case 4:
-                        colorClick(btnYellow, demoSeq);
-                        Log.i("btn", "Clicking Yellow");
-                        break;
+                    switch (sequence.get(seqPos))
+                    {
+                        case 1:
+                            colorClick(btnBlue, demoSeq);
+                            Log.i("btn", "Clicking Blue");
+                            break;
+                        case 2:
+                            colorClick(btnRed, demoSeq);
+                            Log.i("btn", "Clicking Red");
+                            break;
+                        case 3:
+                            colorClick(btnGreen, demoSeq);
+                            Log.i("btn", "Clicking Green");
+                            break;
+                        case 4:
+                            colorClick(btnYellow, demoSeq);
+                            Log.i("btn", "Clicking Yellow");
+                            break;
+                    }
+                    seqPos++;
                 }
-                seqPos++;
+                else
+                {
+                    demoSeq = true;
+                }
             }
             @Override
             public void onFinish()
@@ -148,8 +157,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 //Logs for debugging
                 Log.i("inputVal", "Correct");
                 Log.i("seqSize", "Seq Size " + String.valueOf(sequence.size()));
-                Log.i("clickPos", "Click Pos" + String.valueOf(clickPos));
-                Log.i("clickPos", "Seq Val" + String.valueOf(sequence.get(clickPos)));
+                Log.i("clickPos", "Click Pos " + String.valueOf(clickPos));
+                Log.i("clickPos", "Seq Val " + String.valueOf(sequence.get(clickPos)));
                 //If player has finished sequence:
                 // increase score and add 2 more steps to sequence
                 if(clickPos == sequence.size()-1)
