@@ -12,14 +12,12 @@
         android:id="@+id/tblHighscores"
         android:layout_width="367dp"
         android:layout_height="252dp"
-        android:layout_marginBottom="60dp"
         android:stretchColumns="1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.131"
+        app:layout_constraintHorizontal_bias="0.151"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvGameOver"
-        app:layout_constraintVertical_bias="0.842">
+        app:layout_constraintTop_toBottomOf="@+id/tvGameOver">
 
         <TableRow
             android:layout_width="match_parent"
