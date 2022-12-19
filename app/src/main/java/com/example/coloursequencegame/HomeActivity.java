@@ -23,4 +23,11 @@ public class HomeActivity extends AppCompatActivity {
         startActivity(playAct);
         finish();
     }
+
+    public void doScores(View view) {
+        Intent scoreAct = new Intent(this, HighscoreActivity.class);
+        scoreAct.putExtra("score", 0);
+        startActivity(scoreAct);
+        finish();
+    }
 }

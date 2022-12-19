@@ -223,6 +223,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
     }
 
+    //Display a message and take actions based on success or failure
     public void endRound(boolean success)
     {
         String message ="";

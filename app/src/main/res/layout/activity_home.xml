@@ -12,7 +12,7 @@
         android:id="@+id/tvHomeTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="36dp"
         android:text="Colour Crusher"
         android:textColor="#FFFFFF"
         android:textSize="40sp"
@@ -25,24 +25,39 @@
         android:id="@+id/btnPlay"
         android:layout_width="146dp"
         android:layout_height="104dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="28dp"
         android:background="@drawable/play_button"
         android:backgroundTint="@color/red"
-        android:text="Play!"
         android:onClick="doPlay"
+        android:text="Play!"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.499"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvHomeTitle" />
+
+    <Button
+        android:id="@+id/btnHighScores"
+        android:layout_width="209dp"
+        android:layout_height="99dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/play_button"
+        android:backgroundTint="@color/red"
+        android:onClick="doScores"
+        android:text="Hiscores"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvHomeTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/btnPlay" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="90dp"
         android:layout_height="90dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="72dp"
         android:background="@drawable/play_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.628"
+        app:layout_constraintHorizontal_bias="0.842"
         app:layout_constraintStart_toEndOf="@+id/btnPlay"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -54,10 +69,10 @@
         android:backgroundTint="@color/yellow"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.346"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toEndOf="@+id/btnPlay"
         app:layout_constraintTop_toBottomOf="@+id/textView2"
-        app:layout_constraintVertical_bias="0.668" />
+        app:layout_constraintVertical_bias="0.676" />
 
     <TextView
         android:id="@+id/textView4"
@@ -67,9 +82,10 @@
         android:backgroundTint="@color/green"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btnPlay"
+        app:layout_constraintHorizontal_bias="0.539"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView5"
-        app:layout_constraintVertical_bias="0.614" />
+        app:layout_constraintVertical_bias="0.427" />
 
     <TextView
         android:id="@+id/textView5"
