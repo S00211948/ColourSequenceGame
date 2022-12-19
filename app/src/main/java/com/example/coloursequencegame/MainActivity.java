@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -41,6 +42,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     boolean positionChange, atBase;
     private SensorManager mSensorManager;
     private Sensor mSensor;
+    //Variables for Database
+    boolean buildDB = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,17 +66,23 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         //Set up database
         DatabaseHandler db = new DatabaseHandler(this);
-
         List<HighscoreClass> highscore = db.getAllHighscore();
-        db.emptyHighscore();
-        // Inserting Contacts
-        Log.i("Insert: ", "Inserting ..");
-        db.addHighscore(new HighscoreClass("Joe", 4));
-        db.addHighscore(new HighscoreClass("Mary", 3));
-        db.addHighscore(new HighscoreClass("Jack", 8));
-        db.addHighscore(new HighscoreClass("Andrew", 5));
-        db.addHighscore(new HighscoreClass("Harold", 2));
-        db.addHighscore(new HighscoreClass("John", 9));
+        //Get the build command from previous activity:
+        //If FALSE: dont rebuild database
+        //if TRUE: rebuild database
+        buildDB = getIntent().getBooleanExtra("build",true);
+
+        if (buildDB){
+            db.emptyHighscore();
+            // Inserting Contacts
+            Log.i("Insert: ", "Inserting ..");
+            db.addHighscore(new HighscoreClass("Joe", 4));
+            db.addHighscore(new HighscoreClass("Mary", 3));
+            db.addHighscore(new HighscoreClass("Jack", 8));
+            db.addHighscore(new HighscoreClass("Andrew", 5));
+            db.addHighscore(new HighscoreClass("Harold", 2));
+            db.addHighscore(new HighscoreClass("John", 9));
+        };
 
         //Begin the game
         beginGame();
@@ -90,6 +99,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         onPause();
     }
 
+    //launches the game
     public void beginGame()
     {
       buildSequence(4);
@@ -166,6 +176,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         Play = false;
     }
 
+    //Perform the click on an input button - used to demo sequence
     public void colorClick(Button btn, boolean click)
     {
         if(click) {
@@ -177,6 +188,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
     }
 
+    //Check if the user input matches the sequence
     public void CheckInput(int btn)
     {
         if(Play)
@@ -185,9 +197,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             {
                 //Logs for debugging
                 Log.i("inputVal", "Correct");
-                Log.i("seqSize", "Seq Size " + String.valueOf(sequence.size()));
-                Log.i("clickPos", "Click Pos " + String.valueOf(clickPos));
-                Log.i("clickPos", "Seq Val " + String.valueOf(sequence.get(clickPos)));
+                //Log.i("seqSize", "Seq Size " + String.valueOf(sequence.size()));
+                //Log.i("clickPos", "Click Pos " + String.valueOf(clickPos));
+                //Log.i("clickPos", "Seq Val " + String.valueOf(sequence.get(clickPos)));
+
                 //If player has finished sequence:
                 // increase score and add 2 more steps to sequence
                 if(clickPos == sequence.size()-1)
@@ -196,7 +209,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     Play = false;
                     score += 1;
                     tvScore.setText(String.valueOf(score));
-                    endRound();
+                    endRound(true);
                 }
                 clickPos++;
             }
@@ -205,21 +218,57 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 //If player makes incorrect input:
                 //stop and reset the game.
                 Log.i("inputVal", "Incorrect");
-                resetGame();
-                goToHiScores();
+                endRound(false);
             }
         }
     }
 
-    public void endRound()
+    public void endRound(boolean success)
     {
-        tvBanner.setTextColor(getColor(R.color.white));
-        tvBanner.setText("Round Completed !");
-        v.vibrate(100);
-        v.vibrate(100);
-        v.vibrate(100);
-        buildSequence(2);
-        runSequence();
+        String message ="";
+        long duration = 100;
+        long interval = 100;
+        int color = getColor(R.color.white);
+        //Set message based on success or failure
+        if (success)
+        {
+            message = "Round Completed !";
+            duration = 1500;
+            interval = 500;
+            color = getColor(R.color.white);
+        }
+        else
+        {
+            message = "Game Over !";
+            duration = 1500;
+            interval = 300;
+            color = getColor(R.color.red);
+        }
+        //Create timer for end of round actions
+        CountDownTimer cdt = new CountDownTimer(duration, interval) {
+            @Override
+            public void onTick(long l) {
+                v.vibrate(100);
+            }
+
+            @Override
+            public void onFinish() {
+                //if successful build next round
+                //else end game and go to highscores
+                if (success)
+                {
+                    buildSequence(2);
+                    runSequence();
+                }
+                else
+                {
+                    goToHiScores();
+                }
+            }
+        };
+        tvBanner.setTextColor(color);
+        tvBanner.setText(message);
+        cdt.start();
     }
 
     public void goToHiScores()

@@ -2,6 +2,7 @@ package com.example.coloursequencegame;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,6 +32,7 @@ public class HighscoreActivity extends AppCompatActivity {
         newHiscore = getIntent().getIntExtra("score", 0);
 
         //Load top 5 highscores
+        Log.i("Recived Score", String.valueOf(newHiscore));
         topFiveFilter();
     }
 
@@ -38,19 +40,15 @@ public class HighscoreActivity extends AppCompatActivity {
     public void addTableRow(HighscoreClass score)
     {
         TableLayout tblHighscores = findViewById(R.id.tblHighscores);
-        Log.i("reached", "1");
         TableRow tr = new TableRow(this);
         tr.setMinimumWidth(tblHighscores.getWidth());
-        Log.i("reached", "2");
         TextView tvName = new TextView(this);
         TextView tvScore = new TextView(this);
         tvName.setText(score.getName());
-        Log.i("reached", "3");
         tvName.setTextSize(20);
         tvName.setGravity(3);
         tvName.setTextColor(getColor(R.color.white));
         tvScore.setText(String.valueOf(score.getHighscore()));
-        Log.i("reached", "4");
         tvScore.setTextSize(20);
         tvScore.setGravity(5);
         tvScore.setTextColor(getColor(R.color.white));
@@ -86,6 +84,8 @@ public class HighscoreActivity extends AppCompatActivity {
         TableRow trBtn = new TableRow(this);
         trBtn.setMinimumWidth(tblHighscores.getWidth());
         Button btnSubmitNewScore = new Button(this);
+        btnSubmitNewScore.setBackgroundColor(getColor(R.color.purple_700));
+        btnSubmitNewScore.setTextColor(getColor(R.color.white));
         btnSubmitNewScore.setText("Add Your Highscore");
         btnSubmitNewScore.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,13 +104,14 @@ public class HighscoreActivity extends AppCompatActivity {
         db.addHighscore(new HighscoreClass(name, newHiscore));
         List<HighscoreClass> highscoreList = db.getAllHighscore();
         for (HighscoreClass cn2 : highscoreList) {
-
-
             String log = "Id: " + cn2.getID() + " ,Name: " + cn2.getName() + " ,Highscore: " +
                     cn2.getHighscore();
             //if(cn2.getHighscore() >= )
             Log.i("Name: ", log);
         }
+        Intent reloadAct = new Intent(this, HighscoreActivity.class);
+        startActivity(reloadAct);
+        finish();
     }
 
     public void topFiveFilter()
@@ -141,7 +142,15 @@ public class HighscoreActivity extends AppCompatActivity {
 
     public void doHome(View view) {
         Intent homeAct = new Intent(this, HomeActivity.class);
+        homeAct.putExtra("build", false);
         startActivity(homeAct);
+        finish();
+    }
+
+    public void doPlayAgain(View view) {
+        Intent playAct = new Intent(this, MainActivity.class);
+        playAct.putExtra("build", false);
+        startActivity(playAct);
         finish();
     }
     //endregion
