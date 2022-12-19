@@ -2,6 +2,7 @@ package com.example.coloursequencegame;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -47,12 +48,12 @@ public class HighscoreActivity extends AppCompatActivity {
         Log.i("reached", "3");
         tvName.setTextSize(20);
         tvName.setGravity(3);
-        tvName.setTextColor(getColor(R.color.black));
+        tvName.setTextColor(getColor(R.color.white));
         tvScore.setText(String.valueOf(score.getHighscore()));
         Log.i("reached", "4");
         tvScore.setTextSize(20);
         tvScore.setGravity(5);
-        tvScore.setTextColor(getColor(R.color.black));
+        tvScore.setTextColor(getColor(R.color.white));
         tr.addView(tvName);
         tr.addView(tvScore);
         tblHighscores.addView(tr);
@@ -139,6 +140,8 @@ public class HighscoreActivity extends AppCompatActivity {
     }
 
     public void doHome(View view) {
+        Intent homeAct = new Intent(this, HomeActivity.class);
+        startActivity(homeAct);
         finish();
     }
     //endregion

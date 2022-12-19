@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     //Variables for sequence
     Button btnGreen, btnYellow, btnBlue, btnRed;
-    TextView tvScore;
+    TextView tvScore, tvGameState, tvBanner;
     ArrayList<Integer> sequence = new ArrayList<>();
     boolean Play = false;
     boolean demoSeq = false;
@@ -45,14 +45,15 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         //link buttons
         btnGreen = findViewById(R.id.btnGreen);
         btnYellow = findViewById(R.id.btnYellow);
         btnRed = findViewById(R.id.btnRed);
         btnBlue = findViewById(R.id.btnBlue);
-        //link textview for score
+        //link textviews
         tvScore = findViewById(R.id.tvScore);
+        tvBanner = findViewById(R.id.tvBanner);
 
         // Get instance of Vibrator from current Context
         v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -73,6 +74,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         db.addHighscore(new HighscoreClass("Andrew", 5));
         db.addHighscore(new HighscoreClass("Harold", 2));
         db.addHighscore(new HighscoreClass("John", 9));
+
+        //Begin the game
+        beginGame();
     }
 
     //region Sequence
@@ -110,6 +114,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     public void runSequence() {
         onPause();
         demoSeq = false;
+        tvBanner.setText("Observe!");
+        tvBanner.setTextColor(getColor(R.color.yellow));
         long time = (sequence.size() * 1000) + 1000;
 
         CountDownTimer cdt = new CountDownTimer(time, 1000) {
@@ -148,10 +154,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             @Override
             public void onFinish()
             {
+                onResume();
                 seqPos = 0;
                 clickPos = 0;
                 Play = true;
-                onResume();
+                tvBanner.setText("Play!");
+                tvBanner.setTextColor(getColor(R.color.green));
             }
         };
         cdt.start();
@@ -188,8 +196,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     Play = false;
                     score += 1;
                     tvScore.setText(String.valueOf(score));
-                    buildSequence(2);
-                    runSequence();
+                    endRound();
                 }
                 clickPos++;
             }
@@ -204,14 +211,24 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
     }
 
+    public void endRound()
+    {
+        tvBanner.setTextColor(getColor(R.color.white));
+        tvBanner.setText("Round Completed !");
+        v.vibrate(100);
+        v.vibrate(100);
+        v.vibrate(100);
+        buildSequence(2);
+        runSequence();
+    }
+
     public void goToHiScores()
     {
         Intent hsAct = new Intent(this, HighscoreActivity.class);
         hsAct.putExtra("score", score);
         startActivity(hsAct);
+        finish();
     }
-
-    public void doRun(View view) {beginGame();}
 
     public void doBlueClick(View view) {CheckInput(1);}
 
@@ -250,22 +267,22 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         z = Math.abs(event.values[2]);
         if(y < -2)
         {
-            colorClick(btnGreen, atBase);
+            colorClick(btnBlue, atBase);//green
             positionChange = true;
         }
         else if(y > 2)
         {
-            colorClick(btnYellow, atBase);
+            colorClick(btnRed, atBase);//yellow
             positionChange = true;
         }
         else if(x>9)
         {
-            colorClick(btnBlue, atBase);
+            colorClick(btnYellow, atBase);//blue
             positionChange = true;
         }
         else if(x<4)
         {
-            colorClick(btnRed, atBase);
+            colorClick(btnGreen, atBase);//red
             positionChange = true;
         }
         else{
