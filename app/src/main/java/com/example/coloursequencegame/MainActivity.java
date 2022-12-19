@@ -280,6 +280,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         finish();
     }
 
+    //Click events for the colours to make testing faster
     public void doBlueClick(View view) {CheckInput(1);}
 
     public void doRedClick(View view) {CheckInput(2);}

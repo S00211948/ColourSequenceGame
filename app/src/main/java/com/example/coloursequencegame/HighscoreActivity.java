@@ -37,6 +37,7 @@ public class HighscoreActivity extends AppCompatActivity {
     }
 
     //region Database
+    //Generate a table row for input highscore and append it to the table
     public void addTableRow(HighscoreClass score)
     {
         TableLayout tblHighscores = findViewById(R.id.tblHighscores);
@@ -57,6 +58,7 @@ public class HighscoreActivity extends AppCompatActivity {
         tblHighscores.addView(tr);
     }
 
+    //Generate a row allowing user to enter their name and add their score to the db
     public void showScoreEntry(int playerScore)
     {
         //Get table
@@ -97,6 +99,7 @@ public class HighscoreActivity extends AppCompatActivity {
         tblHighscores.addView(trBtn);
     }
 
+    //Adds the players score to the database and reloads the page
     public void addPlayerScore()
     {
         String name = String.valueOf(tvName.getText());
@@ -114,6 +117,7 @@ public class HighscoreActivity extends AppCompatActivity {
         finish();
     }
 
+    //Retrieve top 5 scores
     public void topFiveFilter()
     {
         DatabaseHandler db = new DatabaseHandler(this);
@@ -140,6 +144,7 @@ public class HighscoreActivity extends AppCompatActivity {
         }
     }
 
+    //Go back to home
     public void doHome(View view) {
         Intent homeAct = new Intent(this, HomeActivity.class);
         homeAct.putExtra("build", false);
@@ -147,6 +152,7 @@ public class HighscoreActivity extends AppCompatActivity {
         finish();
     }
 
+    //Go back to game
     public void doPlayAgain(View view) {
         Intent playAct = new Intent(this, MainActivity.class);
         playAct.putExtra("build", false);
