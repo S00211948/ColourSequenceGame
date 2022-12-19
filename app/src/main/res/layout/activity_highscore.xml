@@ -12,13 +12,14 @@
         android:id="@+id/tblHighscores"
         android:layout_width="367dp"
         android:layout_height="252dp"
+        android:layout_marginBottom="60dp"
         android:stretchColumns="1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.126"
+        app:layout_constraintHorizontal_bias="0.131"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvTitle"
-        app:layout_constraintVertical_bias="0.112">
+        app:layout_constraintTop_toBottomOf="@+id/tvGameOver"
+        app:layout_constraintVertical_bias="0.842">
 
         <TableRow
             android:layout_width="match_parent"
@@ -40,21 +41,6 @@
         </TableRow>
     </TableLayout>
 
-    <TextView
-        android:id="@+id/tvTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="68dp"
-        android:text="Highscores"
-        android:textAlignment="textStart"
-        android:textColor="#FFFFFF"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.286"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <Button
         android:id="@+id/btnGoHome"
         android:layout_width="213dp"
@@ -75,7 +61,7 @@
         android:id="@+id/tvGameOver"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Game Over!"
+        android:text="Highscores"
         android:textAllCaps="true"
         android:textColor="#FFFDFD"
         android:textSize="34sp"
