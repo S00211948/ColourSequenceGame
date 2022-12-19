@@ -2,7 +2,9 @@ package com.example.coloursequencegame;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -14,13 +16,18 @@ import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
+    //Variables for sequence
     Button btnGreen, btnYellow, btnBlue, btnRed;
     TextView tvScore;
     ArrayList<Integer> sequence = new ArrayList<>();
@@ -29,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     int seqPos = 0;
     int clickPos = 0;
     int score = 0;
-
+    //Variables for Vibration
     Vibrator v;
     boolean positionChange, atBase;
     private SensorManager mSensorManager;
@@ -52,6 +59,20 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         // choose the sensor you want
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
+        //Set up database
+        DatabaseHandler db = new DatabaseHandler(this);
+
+        List<HighscoreClass> highscore = db.getAllHighscore();
+        db.emptyHighscore();
+        // Inserting Contacts
+        Log.i("Insert: ", "Inserting ..");
+        db.addHighscore(new HighscoreClass("Joe", 4));
+        db.addHighscore(new HighscoreClass("Mary", 3));
+        db.addHighscore(new HighscoreClass("Jack", 8));
+        db.addHighscore(new HighscoreClass("Andrew", 5));
+        db.addHighscore(new HighscoreClass("Harold", 2));
+        db.addHighscore(new HighscoreClass("John", 9));
     }
 
     //region Sequence
@@ -178,8 +199,16 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 //stop and reset the game.
                 Log.i("inputVal", "Incorrect");
                 resetGame();
+                goToHiScores();
             }
         }
+    }
+
+    public void goToHiScores()
+    {
+        Intent hsAct = new Intent(this, HighscoreActivity.class);
+        hsAct.putExtra("score", score);
+        startActivity(hsAct);
     }
 
     public void doRun(View view) {beginGame();}
@@ -256,4 +285,5 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         // not using
     }
     //endregion
+
 }

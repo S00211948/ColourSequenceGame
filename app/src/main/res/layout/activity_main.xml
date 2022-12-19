@@ -3,7 +3,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity"
     android:background="@color/grey"
-    android:screenOrientation="portrait">
+    android:screenOrientation="landscape">
     <Button
         android:id="@+id/btnBlue"
         style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
@@ -72,13 +72,14 @@
         android:id="@+id/btnRun"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Start"
         android:onClick="doRun"
+        android:text="Start"
         app:layout_constraintBottom_toTopOf="@+id/btnYellow"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.499"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnGreen"
-        app:layout_constraintVertical_bias="0.138" />
+        app:layout_constraintVertical_bias="0.49" />
 
     <TextView
         android:id="@+id/tvScore"
